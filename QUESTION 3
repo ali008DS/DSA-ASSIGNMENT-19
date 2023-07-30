@@ -1,0 +1,49 @@
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+class DoublyListNode:
+    def __init__(self, val):
+        self.val = val
+        self.prev = None
+        self.next = None
+
+def in_order_traversal(root, prev_node):
+    if not root:
+        return prev_node
+    prev_node = in_order_traversal(root.left, prev_node)
+
+    new_node = DoublyListNode(root.val)
+    prev_node.next = new_node
+    new_node.prev = prev_node
+
+    prev_node = in_order_traversal(root.right, new_node)
+    return prev_node
+
+def convert_binary_tree_to_doubly_linked_list(root):
+    dummy_head = DoublyListNode(None)
+    in_order_traversal(root, dummy_head)
+    return dummy_head.next
+
+# Example input binary tree
+root = TreeNode(10)
+root.left = TreeNode(5)
+root.right = TreeNode(20)
+root.right.left = TreeNode(30)
+root.right.right = TreeNode(35)
+
+# Convert binary tree to doubly linked list
+dll_head = convert_binary_tree_to_doubly_linked_list(root)
+
+# Function to print the doubly linked list forwards
+def print_doubly_linked_list_forward(head):
+    current = head
+    while current:
+        print(current.val, end=" ")
+        current = current.next
+
+# Print the doubly linked list forwards
+print_doubly_linked_list_forward(dll_head)
+

@@ -1,0 +1,44 @@
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+def find_lca(root, node1, node2):
+    if not root:
+        return None
+    if root.val > node1 and root.val > node2:
+        return find_lca(root.left, node1, node2)
+    if root.val < node1 and root.val < node2:
+        return find_lca(root.right, node1, node2)
+    return root
+
+def find_distance(root, node, distance):
+    if not root:
+        return 0
+    if root.val == node:
+        return distance
+    if root.val > node:
+        return find_distance(root.left, node, distance + 1)
+    return find_distance(root.right, node, distance + 1)
+
+def find_distance_between_nodes(root, node1, node2):
+    lca = find_lca(root, node1, node2)
+    distance_node1 = find_distance(lca, node1, 0)
+    distance_node2 = find_distance(lca, node2, 0)
+    return distance_node1 + distance_node2
+
+# Example input binary search tree
+root = TreeNode(8)
+root.left = TreeNode(3)
+root.right = TreeNode(10)
+root.left.left = TreeNode(1)
+root.left.right = TreeNode(6)
+root.left.right.left = TreeNode(4)
+root.left.right.right = TreeNode(7)
+root.right.right = TreeNode(14)
+root.right.right.left = TreeNode(13)
+
+# Test cases
+print(find_distance_between_nodes(root, 6, 14))  # Output: 4
+print(find_distance_between_nodes(root, 3, 4))   # Output: 2

@@ -1,0 +1,46 @@
+class TreeNode:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+def in_order_traversal(root, inorder_list):
+    if not root:
+        return
+    in_order_traversal(root.left, inorder_list)
+    inorder_list.append(root.val)
+    in_order_traversal(root.right, inorder_list)
+
+def sorted_list_to_bst(arr):
+    if not arr:
+        return None
+    mid = len(arr) // 2
+    root = TreeNode(arr[mid])
+    root.left = sorted_list_to_bst(arr[:mid])
+    root.right = sorted_list_to_bst(arr[mid + 1:])
+    return root
+
+# Example input binary tree
+root = TreeNode(10)
+root.left = TreeNode(2)
+root.right = TreeNode(7)
+root.left.left = TreeNode(8)
+root.left.right = TreeNode(4)
+
+# Convert binary tree to binary search tree
+inorder_list = []
+in_order_traversal(root, inorder_list)
+new_root = sorted_list_to_bst(inorder_list)
+
+# Function to print the binary tree in in-order traversal
+def print_in_order(root):
+    if not root:
+        return
+    print_in_order(root.left)
+    print(root.val, end=" ")
+    print_in_order(root.right)
+
+# Print the converted binary search tree
+print_in_order(new_root)
+
+
